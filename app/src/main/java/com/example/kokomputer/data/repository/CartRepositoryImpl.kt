@@ -5,6 +5,7 @@ import com.example.kokomputer.data.mapper.toCartEntity
 import com.example.kokomputer.data.mapper.toCartList
 import com.example.kokomputer.data.model.Cart
 import com.example.kokomputer.data.model.Menu
+import com.example.kokomputer.data.model.PriceItem
 import com.example.kokomputer.data.source.local.database.entity.CartEntity
 import com.example.kokomputer.utils.ResultWrapper
 import com.example.kokomputer.utils.proceed
@@ -36,7 +37,27 @@ class CartRepositoryImpl(private val cartDataSource: CartDataSource) : CartRepos
                 delay(2000)
             }
     }
-
+    override fun getCheckoutData(): Flow<ResultWrapper<Triple<List<Cart>,List<PriceItem>, Double>>>{
+        return cartDataSource.getAllCarts()
+            .map {
+                //mapping into cart list and sum the total price
+                proceed {
+                    val result = it.toCartList()
+                    val priceItemList = result.map {
+                        PriceItem(it.productName, it.productPrice * it.itemQuantity)
+                    }
+                    val totalPrice = priceItemList.sumOf { it.total }
+                    Triple(result,priceItemList, totalPrice)
+                }
+            }.map {
+                //map to check when list is empty
+                if (it.payload?.first?.isEmpty() == false) return@map it
+                ResultWrapper.Empty(it.payload)
+            }.onStart {
+                emit(ResultWrapper.Loading())
+                delay(2000)
+            }
+    }
     override fun createCart(
         menu: Menu,
         quantity: Int,
