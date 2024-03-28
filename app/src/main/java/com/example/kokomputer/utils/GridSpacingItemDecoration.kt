@@ -1,4 +1,4 @@
-package com.catnip.kokomputer.utils
+package com.example.kokomputer.utils
 
 import android.graphics.Rect
 import android.view.View

@@ -1,4 +1,4 @@
-package com.catnip.kokomputer.utils
+package com.example.kokomputer.utils
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
