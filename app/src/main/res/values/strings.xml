@@ -2,4 +2,18 @@
     <string name="app_name">KoKomputer</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="text_profile">Profile</string>
+    <string name="text_cart_title">Cart</string>
+    <string name="text_home_greeting">Hi, Ihsan</string>
+    <string name="text_what_you_gonna_eat_today">What you gonna eat today?</string>
+    <string name="text_categories">Categories</string>
+    <string name="text_discount_30_percent">Discount 30 percent</string>
+    <string name="text_discount_description">Order your food from the application and get your discount</string>
+    <string name="text_food_list">Food List</string>
+    <string name="text_init_amount">1</string>
+    <string name="text_location_title">Lokasi</string>
+    <string name="text_tambah_ke_keranjang">Tambah ke Keranjang</string>
+    <string name="text_price">Rp 18.000</string>
+    <string name="text_successfully_add_product_to_cart">Successfully add product to cart</string>
+    <string name="text_failed_add_product_to_cart">Failed add product to cart</string>
 </resources>

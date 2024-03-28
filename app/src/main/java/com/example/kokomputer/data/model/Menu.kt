@@ -1,7 +1,10 @@
 package com.example.kokomputer.data.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import java.util.UUID
 
+@Parcelize
 data class Menu(
     var id: String = UUID.randomUUID().toString(),
     var imgURL: String,
@@ -10,4 +13,4 @@ data class Menu(
     var location: String,
     var locationURL: String,
     var price: Double
-)
+) : Parcelable
