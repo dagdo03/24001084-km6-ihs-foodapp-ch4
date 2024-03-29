@@ -1,4 +1,4 @@
-package com.example.kokomputer.data.datasource.catalog
+package com.example.kokomputer.data.datasource.category
 
 import com.example.kokomputer.data.model.Category
 

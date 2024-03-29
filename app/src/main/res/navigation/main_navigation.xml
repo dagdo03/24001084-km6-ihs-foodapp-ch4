@@ -19,5 +19,15 @@
         android:id="@+id/menu_tab_home"
         android:name="com.example.kokomputer.presentation.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_menuFragment_to_detailActivity"
+            app:destination="@id/detailMenuActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/detailMenuActivity"
+        android:name="com.example.kokomputer.presentation.detailproduct.DetailMenuActivity"
+        android:label="activity_detail_menu"
+        tools:layout="@layout/activity_detail_menu" />
+
 </navigation>
