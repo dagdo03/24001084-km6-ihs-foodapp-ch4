@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.kokomputer"
+    namespace = "com.example.foodapp"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.kokomputer"
+        applicationId = "com.example.foodapp"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

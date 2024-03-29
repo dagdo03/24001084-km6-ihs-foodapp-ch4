@@ -7,17 +7,17 @@
 
     <fragment
         android:id="@+id/menu_tab_cart"
-        android:name="com.example.kokomputer.presentation.cart.CartFragment"
+        android:name="com.example.foodapp.presentation.cart.CartFragment"
         android:label="fragment_cart"
         tools:layout="@layout/fragment_cart" />
     <fragment
         android:id="@+id/menu_tab_profile"
-        android:name="com.example.kokomputer.presentation.profile.ProfileFragment"
+        android:name="com.example.foodapp.presentation.profile.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/menu_tab_home"
-        android:name="com.example.kokomputer.presentation.home.HomeFragment"
+        android:name="com.example.foodapp.presentation.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home">
         <action
@@ -26,7 +26,7 @@
     </fragment>
     <activity
         android:id="@+id/detailMenuActivity"
-        android:name="com.example.kokomputer.presentation.detailproduct.DetailMenuActivity"
+        android:name="com.example.foodapp.presentation.detailproduct.DetailMenuActivity"
         android:label="activity_detail_menu"
         tools:layout="@layout/activity_detail_menu" />
 
