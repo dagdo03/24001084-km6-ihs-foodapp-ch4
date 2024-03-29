@@ -27,12 +27,12 @@ class ProfileFragment : Fragment() {
 
     }
 
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        super.onViewCreated(view, savedInstanceState)
-//        setClickListener()
-//        observeEditMode()
-//        observeProfileData()
-//    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setClickListener()
+        observeEditMode()
+        observeProfileData()
+    }
 
     private fun observeProfileData() {
         viewModel.profileData.observe(viewLifecycleOwner) {
