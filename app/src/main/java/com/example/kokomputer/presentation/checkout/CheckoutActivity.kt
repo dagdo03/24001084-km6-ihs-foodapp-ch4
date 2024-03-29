@@ -62,7 +62,6 @@ class CheckoutActivity : AppCompatActivity() {
     }
 
 
-
     private fun setupList() {
         binding.layoutContent.rvCart.adapter = adapter
         binding.layoutContent.rvShoppingSummary.adapter = priceItemAdapter
@@ -111,6 +110,7 @@ class CheckoutActivity : AppCompatActivity() {
             })
         }
     }
+
     private fun observeCheckoutResult() {
         viewModel.checkoutResult.observe(this) {
             it.proceedWhen(
@@ -122,7 +122,11 @@ class CheckoutActivity : AppCompatActivity() {
                 doOnError = {
                     binding.layoutState.root.isVisible = false
                     binding.layoutState.pbLoading.isVisible = false
-                    Toast.makeText(this, "Checkout Error", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this,
+                        getString(R.string.text_checkout_error),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 },
                 doOnLoading = {
                     binding.layoutState.root.isVisible = true
@@ -132,8 +136,8 @@ class CheckoutActivity : AppCompatActivity() {
         }
     }
 
-    private fun dialogCheckoutSuccess(context : Context) {
-        val dialogView : View = LayoutInflater.from(context).inflate(R.layout.dialog_checkout, null)
+    private fun dialogCheckoutSuccess(context: Context) {
+        val dialogView: View = LayoutInflater.from(context).inflate(R.layout.dialog_checkout, null)
         val finishBtn = dialogView.findViewById<Button>(R.id.btn_back_home)
         val alertDialogBuilder = AlertDialog.Builder(context)
         val dialog = alertDialogBuilder.create()

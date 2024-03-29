@@ -30,6 +30,8 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:text="@string/text_title_order_confirmation" />
+
+
     </LinearLayout>
 
     <include
