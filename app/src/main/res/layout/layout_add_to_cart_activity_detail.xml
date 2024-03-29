@@ -43,7 +43,6 @@
             android:layout_height="wrap_content"
             android:text="@string/text_price"
             android:textSize="20sp"
-            app:layout_constraintStart_toEndOf="@id/b_add_to_cart_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="@id/b_add_to_cart_button"
             app:layout_constraintTop_toTopOf="@id/b_add_to_cart_button"/>
@@ -52,7 +51,6 @@
             android:id="@+id/b_add_to_cart_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/md_theme_light_primary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:text="@string/text_tambah_ke_keranjang"

@@ -6,12 +6,26 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.example.kokomputer.core.ViewHolderBinder
 import com.example.kokomputer.data.model.Menu
 import com.example.kokomputer.databinding.LayoutItemMenuGridBinding
+import com.example.kokomputer.databinding.LayoutItemMenuListBinding
+import com.example.kokomputer.presentation.home.adapter.viewholder.MenuGridItemViewHolder
+import com.example.kokomputer.presentation.home.adapter.viewholder.MenuListItemViewHolder
 import com.example.kokomputer.utils.toIndonesianFormat
 
-class MenuListAdapter(private val itemClick: (Menu) -> Unit) :
-    RecyclerView.Adapter<MenuListAdapter.ItemMenuViewHolder>() {
+interface OnItemClickedListener<T> {
+    fun onItemClicked(item: T)
+}
+
+class MenuListAdapter(
+    private val listMode: Int = MODE_LIST,
+    private val listener: OnItemClickedListener<Menu>,
+    ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    companion object {
+        const val MODE_LIST = 0
+        const val MODE_GRID = 1
+    }
 
     private val dataDiffer =
         AsyncListDiffer(
@@ -37,14 +51,31 @@ class MenuListAdapter(private val itemClick: (Menu) -> Unit) :
         dataDiffer.submitList(data)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemMenuViewHolder {
-        val binding =
-            LayoutItemMenuGridBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ItemMenuViewHolder(binding, itemClick)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return if (listMode == MODE_GRID) {
+            MenuGridItemViewHolder(
+                LayoutItemMenuGridBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                ),
+                listener
+            )
+        } else {
+            MenuListItemViewHolder(
+                LayoutItemMenuListBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                ),
+                listener
+            )
+        }
     }
 
-    override fun onBindViewHolder(holder: ItemMenuViewHolder, position: Int) {
-        holder.bindView(dataDiffer.currentList[position])
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (holder !is ViewHolderBinder<*>) return
+        (holder as ViewHolderBinder<Menu>).bind(dataDiffer.currentList[position])
     }
 
     override fun getItemCount(): Int = dataDiffer.currentList.size
@@ -53,7 +84,6 @@ class MenuListAdapter(private val itemClick: (Menu) -> Unit) :
         private val binding: LayoutItemMenuGridBinding,
         val itemClick: (Menu) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
-
         fun bindView(item: Menu) {
             with(item) {
                 binding.ivMenuImage.load(item.imgURL) {

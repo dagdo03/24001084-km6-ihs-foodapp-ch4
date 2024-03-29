@@ -5,39 +5,48 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.home.HomeFragment">
+
     <include
         android:id="@+id/layout_header"
         layout="@layout/layout_home_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     </include>
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/ns_layout"
-        app:layout_constraintTop_toBottomOf="@id/layout_header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/layout_header"
+        app:layout_constraintBottom_toBottomOf="parent">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <include
                 android:id="@+id/layout_banner"
                 layout="@layout/layout_home_banner"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:layout_margin="8dp"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
             </include>
+
             <include
                 android:id="@+id/layout_category_header"
                 layout="@layout/layout_category_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/layout_banner"
                 android:layout_margin="8dp"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_banner">
+
             </include>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_category"
                 android:layout_width="match_parent"
@@ -47,37 +56,39 @@
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintTop_toBottomOf="@id/layout_category_header"
-                tools:listitem="@layout/layout_item_category"/>
+                tools:listitem="@layout/layout_item_category" />
+
             <TextView
                 android:id="@+id/tv_catalog_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="8dp"
                 android:text="@string/text_food_list"
                 android:textStyle="bold"
-                android:layout_margin="8dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rv_category" />
+
             <ImageView
                 android:id="@+id/iv_icon_list"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:src="@drawable/ic_list_view"
                 android:layout_margin="8dp"
+                android:src="@drawable/ic_list_view"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rv_category"/>
+                app:layout_constraintTop_toBottomOf="@id/rv_category" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_menu"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:layout_marginHorizontal="8dp"
                 android:layout_marginVertical="8dp"
                 android:orientation="vertical"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:spanCount="2"
-                app:layout_constraintTop_toBottomOf="@id/tv_catalog_header"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_catalog_header"
+                app:spanCount="2"
                 tools:listitem="@layout/layout_item_menu_grid"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 

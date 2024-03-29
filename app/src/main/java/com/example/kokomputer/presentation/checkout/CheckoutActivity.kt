@@ -1,6 +1,13 @@
 package com.example.kokomputer.presentation.checkout
 
+import android.app.Activity
+import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.Button
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -41,7 +48,19 @@ class CheckoutActivity : AppCompatActivity() {
         setContentView(binding.root)
         setupList()
         observeData()
+        setClickListeners()
+        observeCheckoutResult()
     }
+
+    private fun setClickListeners() {
+        binding.ivBack.setOnClickListener {
+            onBackPressed()
+        }
+        binding.btnCheckout.setOnClickListener {
+            viewModel.checkout()
+        }
+    }
+
 
 
     private fun setupList() {
@@ -92,4 +111,39 @@ class CheckoutActivity : AppCompatActivity() {
             })
         }
     }
+    private fun observeCheckoutResult() {
+        viewModel.checkoutResult.observe(this) {
+            it.proceedWhen(
+                doOnSuccess = {
+                    binding.layoutState.root.isVisible = false
+                    binding.layoutState.pbLoading.isVisible = false
+                    dialogCheckoutSuccess(this)
+                },
+                doOnError = {
+                    binding.layoutState.root.isVisible = false
+                    binding.layoutState.pbLoading.isVisible = false
+                    Toast.makeText(this, "Checkout Error", Toast.LENGTH_SHORT).show()
+                },
+                doOnLoading = {
+                    binding.layoutState.root.isVisible = true
+                    binding.layoutState.pbLoading.isVisible = true
+                }
+            )
+        }
+    }
+
+    private fun dialogCheckoutSuccess(context : Context) {
+        val dialogView : View = LayoutInflater.from(context).inflate(R.layout.dialog_checkout, null)
+        val finishBtn = dialogView.findViewById<Button>(R.id.btn_back_home)
+        val alertDialogBuilder = AlertDialog.Builder(context)
+        val dialog = alertDialogBuilder.create()
+        alertDialogBuilder.setView(dialogView)
+        finishBtn.setOnClickListener {
+            viewModel.removeAllCart()
+            (context as? Activity)?.finish() // Make sure context is an Activity
+            dialog.dismiss()
+        }
+        alertDialogBuilder.show()
+    }
+
 }

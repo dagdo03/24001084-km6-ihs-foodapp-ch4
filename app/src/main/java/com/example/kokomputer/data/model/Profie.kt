@@ -1,6 +1,9 @@
 package com.example.kokomputer.data.model
 
+import java.util.UUID
+
 data class Profie(
+    var id: String = UUID.randomUUID().toString(),
     val name: String,
     val username: String,
     val email: String,
