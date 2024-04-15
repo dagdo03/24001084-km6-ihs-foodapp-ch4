@@ -69,7 +69,8 @@ class CheckoutActivity : AppCompatActivity() {
 
     private fun observeData() {
         viewModel.checkoutData.observe(this) { result ->
-            result.proceedWhen(doOnSuccess = {
+            result.proceedWhen(
+                doOnSuccess = {
                 binding.layoutState.root.isVisible = false
                 binding.layoutState.pbLoading.isVisible = false
                 binding.layoutState.tvError.isVisible = false

@@ -1,5 +1,6 @@
 package com.example.foodapp.presentation.cart
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
@@ -29,7 +30,9 @@ class CartViewModel(private val cartRepository: CartRepository): ViewModel() {
     }
     fun setCartNotes(item: Cart) {
         viewModelScope.launch(Dispatchers.IO) {
-            cartRepository.setCartNotes(item).collect()
+            cartRepository.setCartNotes(item).collect {
+                Log.d("Set Notes", "setCartNotes: $it")
+            }
         }
     }
 }

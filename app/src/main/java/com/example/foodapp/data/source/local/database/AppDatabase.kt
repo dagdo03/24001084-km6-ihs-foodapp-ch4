@@ -9,7 +9,7 @@ import com.example.foodapp.data.source.local.database.entity.CartEntity
 
 @Database(
     entities = [CartEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = true
 )
 
@@ -18,7 +18,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun cartDao(): CartDao
 
     companion object {
-        private const val DB_NAME = "KoKomputer.db"
+        private const val DB_NAME = "Foodapp.db"
 
         @Volatile
         private var INSTANCE: AppDatabase? = null
