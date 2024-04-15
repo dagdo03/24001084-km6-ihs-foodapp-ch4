@@ -78,7 +78,7 @@ class DetailMenuActivity : AppCompatActivity() {
 
     private fun observeData() {
         viewModel.priceLiveData.observe(this) {
-            binding.layoutAddToCart.bAddToCartButton.isEnabled = it != 0.0
+            binding.layoutAddToCart.bAddToCartButton.isEnabled = it != 0
             binding.layoutAddToCart.tvTotalPrice.text = it.toIndonesianFormat()
         }
         viewModel.menuCountLiveData.observe(this) {

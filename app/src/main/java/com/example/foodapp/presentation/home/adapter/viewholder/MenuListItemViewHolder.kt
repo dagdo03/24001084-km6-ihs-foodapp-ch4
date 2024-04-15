@@ -10,7 +10,7 @@ import com.example.foodapp.utils.toIndonesianFormat
 
 class MenuListItemViewHolder(
     private val binding: LayoutItemMenuListBinding,
-    private val listener: OnItemClickedListener<Menu>
+    private val itemClick: (Menu) -> Unit
 ) : RecyclerView.ViewHolder(binding.root),ViewHolderBinder<Menu>{
     override fun bind(item: Menu) {
         item.let {
@@ -21,7 +21,7 @@ class MenuListItemViewHolder(
             binding.tvMenuPrice.text = it.price.toIndonesianFormat()
 
             itemView.setOnClickListener {
-                listener.onItemClicked(item)
+                itemClick(item)
             }
         }
     }
