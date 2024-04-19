@@ -10,14 +10,7 @@ import kotlinx.coroutines.Dispatchers
 class ProfileViewModel(
     private val userRepository: UserRepository
 ) : ViewModel() {
-    val profileData = MutableLiveData(
-        Profie(
-            name = "Ihsan Widagdo",
-            username = "ihsan_03",
-            email = "ihsan.widagdo@gmail.com",
-            profileImg = "https://avatars.githubusercontent.com/u/95538168?s=96&v=4"
-        )
-    )
+
 
     val isEditMode = MutableLiveData(false)
 

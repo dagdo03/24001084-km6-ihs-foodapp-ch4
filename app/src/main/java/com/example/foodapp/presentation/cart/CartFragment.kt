@@ -37,12 +37,14 @@ class CartFragment : Fragment() {
 
     private lateinit var binding: FragmentCartBinding
     private val viewModel: CartViewModel by viewModels {
+        val s: FirebaseService = FirebaseServiceImpl()
+        val ads: AuthDataSource = FirebaseAuthDataSource(s)
+        val ur: UserRepository = UserRepositoryImpl(ads)
         val db = AppDatabase.getInstance(requireContext())
         val ds: CartDataSource = CartDatabaseDataSource(db.cartDao())
         val rp: CartRepository = CartRepositoryImpl(ds)
-        GenericViewModelFactory.create(CartViewModel(rp))
+        GenericViewModelFactory.create(CartViewModel(rp, ur))
     }
-    private val mainViewModel: MainViewModel by activityViewModels()
     private val adapter: CartListAdapter by lazy {
         CartListAdapter(object : CartListener {
             override fun onPlusTotalItemCartClicked(cart: Cart) {
@@ -83,7 +85,7 @@ class CartFragment : Fragment() {
 
     private fun setClickListeners() {
         binding.btnCheckoutCart.setOnClickListener {
-            if(!mainViewModel.isLoggedIn()) navigateToLogin()
+            if(!viewModel.isLoggedIn()) navigateToLogin()
             else startActivity(Intent(requireContext(), CheckoutActivity::class.java))
         }
     }
