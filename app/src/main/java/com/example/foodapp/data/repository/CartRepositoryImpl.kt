@@ -79,7 +79,6 @@ class CartRepositoryImpl(private val cartDataSource: CartDataSource) : CartRepos
                         productPrice = menu.price,
                         productImgUrl = menu.imgURL,
                         itemNotes = notes,
-
                         )
                 )
                 delay(1000)

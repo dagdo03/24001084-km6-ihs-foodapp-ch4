@@ -38,9 +38,7 @@ class CartViewModel(
     }
     fun setCartNotes(item: Cart) {
         viewModelScope.launch(Dispatchers.IO) {
-            cartRepository.setCartNotes(item).collect {
-                Log.d("Set Notes", "setCartNotes: $it")
-            }
+            cartRepository.setCartNotes(item).collect()
         }
     }
 }

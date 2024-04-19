@@ -22,4 +22,5 @@
         android:textAlignment="textEnd"
         android:textStyle="bold"
         tools:text="IDR 20.000.000" />
+
 </LinearLayout>
