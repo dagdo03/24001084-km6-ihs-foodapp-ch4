@@ -56,38 +56,17 @@ class ProfileFragment : Fragment() {
     private fun doEditProfile(){
         if(checkNameValidation()){
             val fullName = binding.layoutProfileBody.nameEditText.text.toString().trim()
-            val email = binding.layoutProfileBody.emailEditText.text.toString().trim()
-            proceedEdit(fullName, email)
+            proceedEdit(fullName)
         }
     }
-    private fun proceedEdit(fullName: String, email : String) {
+    private fun proceedEdit(fullName: String) {
         viewModel.updateProfileName(fullName = fullName).observe(viewLifecycleOwner) {
             it.proceedWhen(
                 doOnSuccess = {
                     binding.layoutProfileBody.pbLoading.isVisible = false
                     binding.layoutProfileBody.btnChangeProfile.isVisible = true
                     Toast.makeText(requireContext(), "Change Profile data Success !", Toast.LENGTH_SHORT).show()
-                    showUserData()
-                },
-                doOnError = {
-                    binding.layoutProfileBody.pbLoading.isVisible = false
-                    binding.layoutProfileBody.btnChangeProfile.isVisible = true
-                    Toast.makeText(requireContext(), "Change Profile data Failed !", Toast.LENGTH_SHORT).show()
-
-                },
-                doOnLoading = {
-                    binding.layoutProfileBody.pbLoading.isVisible = true
-                    binding.layoutProfileBody.btnChangeProfile.isVisible = false
-                }
-            )
-        }
-        viewModel.updateProfileEmail(email = email).observe(viewLifecycleOwner) {
-            it.proceedWhen(
-                doOnSuccess = {
-                    binding.layoutProfileBody.pbLoading.isVisible = false
-                    binding.layoutProfileBody.btnChangeProfile.isVisible = true
-                    Toast.makeText(requireContext(), "Change Profile data Success !", Toast.LENGTH_SHORT).show()
-                    showUserData()
+                    binding.layoutProfileBody.btnChangeProfile.isEnabled = false
                 },
                 doOnError = {
                     binding.layoutProfileBody.pbLoading.isVisible = false
@@ -140,14 +119,16 @@ class ProfileFragment : Fragment() {
     private fun observeEditMode() {
         viewModel.isEditMode.observe(viewLifecycleOwner) {
             binding.layoutProfileBody.nameEditText.isEnabled = it
-            binding.layoutProfileBody.emailEditText.isEnabled = it
+            binding.layoutProfileBody.btnChangeProfile.isEnabled = it
         }
-        doEditProfile()
     }
 
     private fun setClickListener() {
         binding.layoutProfileHeader.ivIcEditText.setOnClickListener {
             viewModel.changeEditMode()
+        }
+        binding.layoutProfileBody.btnChangeProfile.setOnClickListener {
+            doEditProfile()
         }
         binding.layoutProfileBody.btnLogout.setOnClickListener {
             doLogout()

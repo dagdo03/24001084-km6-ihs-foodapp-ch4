@@ -12,9 +12,13 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class CartViewModel(
-    private val cartRepository: CartRepository
+    private val cartRepository: CartRepository,
+    private val userRepository: UserRepository
 ): ViewModel() {
 
+    fun isLoggedIn() =
+        userRepository
+            .isLoggedIn()
     fun getAllCarts() = cartRepository.getUserCartData().asLiveData(Dispatchers.IO)
     val cartList = cartRepository.getUserCartData().asLiveData(Dispatchers.IO)
     fun decreaseCart(item: Cart) {
