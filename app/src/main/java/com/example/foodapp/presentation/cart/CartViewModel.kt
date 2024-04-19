@@ -6,11 +6,15 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.foodapp.data.model.Cart
 import com.example.foodapp.data.repository.CartRepository
+import com.example.foodapp.data.repository.UserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class CartViewModel(private val cartRepository: CartRepository): ViewModel() {
+class CartViewModel(
+    private val cartRepository: CartRepository
+): ViewModel() {
+
     fun getAllCarts() = cartRepository.getUserCartData().asLiveData(Dispatchers.IO)
     val cartList = cartRepository.getUserCartData().asLiveData(Dispatchers.IO)
     fun decreaseCart(item: Cart) {

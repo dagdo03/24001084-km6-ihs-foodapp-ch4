@@ -7,18 +7,27 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.example.foodapp.R
+import com.example.foodapp.data.datasource.auth.AuthDataSource
+import com.example.foodapp.data.datasource.auth.FirebaseAuthDataSource
 import com.example.foodapp.data.datasource.cart.CartDataSource
 import com.example.foodapp.data.datasource.cart.CartDatabaseDataSource
 import com.example.foodapp.data.model.Cart
 import com.example.foodapp.data.repository.CartRepository
 import com.example.foodapp.data.repository.CartRepositoryImpl
+import com.example.foodapp.data.repository.UserRepository
+import com.example.foodapp.data.repository.UserRepositoryImpl
+import com.example.foodapp.data.source.firebase.FirebaseService
+import com.example.foodapp.data.source.firebase.FirebaseServiceImpl
 import com.example.foodapp.data.source.local.database.AppDatabase
 import com.example.foodapp.databinding.FragmentCartBinding
 import com.example.foodapp.presentation.checkout.CheckoutActivity
 import com.example.foodapp.presentation.common.adapter.CartListAdapter
 import com.example.foodapp.presentation.common.adapter.CartListener
+import com.example.foodapp.presentation.login.LoginActivity
+import com.example.foodapp.presentation.main.MainViewModel
 import com.example.foodapp.utils.GenericViewModelFactory
 import com.example.foodapp.utils.hideKeyboard
 import com.example.foodapp.utils.proceedWhen
@@ -33,6 +42,7 @@ class CartFragment : Fragment() {
         val rp: CartRepository = CartRepositoryImpl(ds)
         GenericViewModelFactory.create(CartViewModel(rp))
     }
+    private val mainViewModel: MainViewModel by activityViewModels()
     private val adapter: CartListAdapter by lazy {
         CartListAdapter(object : CartListener {
             override fun onPlusTotalItemCartClicked(cart: Cart) {
@@ -73,8 +83,16 @@ class CartFragment : Fragment() {
 
     private fun setClickListeners() {
         binding.btnCheckoutCart.setOnClickListener {
-            startActivity(Intent(requireContext(), CheckoutActivity::class.java))
+            if(!mainViewModel.isLoggedIn()) navigateToLogin()
+            else startActivity(Intent(requireContext(), CheckoutActivity::class.java))
         }
+    }
+
+    private fun navigateToLogin() {
+        startActivity(Intent(requireContext(), LoginActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
+        )
     }
 
     private fun observeData() {

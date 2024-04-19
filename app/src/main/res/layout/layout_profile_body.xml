@@ -23,24 +23,25 @@
             android:id="@+id/name_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:enabled="false" />
+            android:enabled="false"
+            android:hint="@string/text_your_name"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Username Input -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/username_input_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp">
+<!--    &lt;!&ndash; Username Input &ndash;&gt;-->
+<!--    <com.google.android.material.textfield.TextInputLayout-->
+<!--        android:id="@+id/username_input_layout"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginBottom="16dp">-->
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/username_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:enabled="false" />
+<!--        <com.google.android.material.textfield.TextInputEditText-->
+<!--            android:id="@+id/username_edit_text"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:enabled="false" />-->
 
-    </com.google.android.material.textfield.TextInputLayout>
+<!--    </com.google.android.material.textfield.TextInputLayout>-->
 
     <!-- Email Input -->
     <com.google.android.material.textfield.TextInputLayout
@@ -53,8 +54,46 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:enabled="false"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:hint="@string/text_email"/>
 
     </com.google.android.material.textfield.TextInputLayout>
+    <FrameLayout
+        android:id="@+id/fl_btn_loading_state"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <Button
+            android:id="@+id/btn_change_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/text_save"
+            android:backgroundTint="@color/md_theme_light_tertiary"/>
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/pb_loading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:visibility="gone" />
+    </FrameLayout>
+    <Button
+        android:id="@+id/btn_logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/md_theme_dark_errorContainer"
+        android:layout_marginTop="16dp"
+        android:text="@string/text_logout"
+        />
+    <Button
+        android:id="@+id/btn_reset_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/md_theme_light_secondary"
+        android:layout_marginTop="8dp"
+        android:text="@string/text_change_password"
+        />
 
 </LinearLayout>

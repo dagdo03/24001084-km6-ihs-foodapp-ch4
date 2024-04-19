@@ -8,8 +8,8 @@
     app:cardCornerRadius="8dp">
 
     <View
-        android:layout_width="65dp"
-        android:layout_height="50dp"
+        android:layout_width="80dp"
+        android:layout_height="60dp"
         android:background="@drawable/bg_black_gradient" />
 
     <LinearLayout
@@ -20,8 +20,8 @@
 
         <ImageView
             android:id="@+id/iv_category_image"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="65dp"
+            android:layout_height="60dp"
             android:scaleType="centerCrop"
             tools:src="@tools:sample/avatars" />
 

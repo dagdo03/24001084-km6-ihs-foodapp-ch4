@@ -14,9 +14,14 @@ import androidx.core.view.isVisible
 import com.example.foodapp.R
 import com.example.foodapp.data.datasource.cart.CartDataSource
 import com.example.foodapp.data.datasource.cart.CartDatabaseDataSource
+import com.example.foodapp.data.datasource.menu.MenuApiDataSource
+import com.example.foodapp.data.datasource.menu.MenuDataSource
 import com.example.foodapp.data.repository.CartRepository
 import com.example.foodapp.data.repository.CartRepositoryImpl
+import com.example.foodapp.data.repository.MenuRepository
+import com.example.foodapp.data.repository.MenuRepositoryImpl
 import com.example.foodapp.data.source.local.database.AppDatabase
+import com.example.foodapp.data.source.network.services.FoodAppApiService
 import com.example.foodapp.databinding.ActivityCheckoutBinding
 import com.example.foodapp.presentation.checkout.adapter.PriceListAdapter
 import com.example.foodapp.presentation.common.adapter.CartListAdapter
@@ -29,10 +34,13 @@ class CheckoutActivity : AppCompatActivity() {
         ActivityCheckoutBinding.inflate(layoutInflater)
     }
     private val viewModel: CheckoutViewModel by viewModels {
+        val service = FoodAppApiService.invoke()
         val db = AppDatabase.getInstance(this)
+        val menuDataSource: MenuDataSource = MenuApiDataSource(service)
+        val menuRepository: MenuRepository = MenuRepositoryImpl(menuDataSource)
         val ds: CartDataSource = CartDatabaseDataSource(db.cartDao())
         val rp: CartRepository = CartRepositoryImpl(ds)
-        GenericViewModelFactory.create(CheckoutViewModel(rp))
+        GenericViewModelFactory.create(CheckoutViewModel(rp, menuRepository))
     }
     private val adapter: CartListAdapter by lazy {
         CartListAdapter()
@@ -49,7 +57,7 @@ class CheckoutActivity : AppCompatActivity() {
         setupList()
         observeData()
         setClickListeners()
-        observeCheckoutResult()
+
     }
 
     private fun setClickListeners() {
@@ -57,7 +65,8 @@ class CheckoutActivity : AppCompatActivity() {
             onBackPressed()
         }
         binding.btnCheckout.setOnClickListener {
-            viewModel.checkout()
+            viewModel.checkoutCart()
+            observeCheckoutResult()
         }
     }
 
@@ -113,7 +122,7 @@ class CheckoutActivity : AppCompatActivity() {
     }
 
     private fun observeCheckoutResult() {
-        viewModel.checkoutResult.observe(this) {
+        viewModel.checkoutCart().observe(this) {
             it.proceedWhen(
                 doOnSuccess = {
                     binding.layoutState.root.isVisible = false
