@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.view.menu.MenuAdapter
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -25,7 +24,6 @@ import com.example.foodapp.databinding.FragmentHomeBinding
 import com.example.foodapp.presentation.detailproduct.DetailMenuActivity
 import com.example.foodapp.presentation.home.adapter.CategoryListAdapter
 import com.example.foodapp.presentation.home.adapter.MenuListAdapter
-import com.example.foodapp.presentation.home.adapter.OnItemClickedListener
 import com.example.foodapp.utils.GenericViewModelFactory
 import com.example.foodapp.utils.proceedWhen
 
@@ -70,11 +68,13 @@ class HomeFragment : Fragment() {
             )
         }
     }
+
     private fun setupMenu() {
         binding.rvMenu.apply {
             adapter = menuAdapter
         }
     }
+
     private fun getCategoryData() {
         viewModel.getCategory().observe(viewLifecycleOwner) {
             it.proceedWhen(
@@ -88,6 +88,7 @@ class HomeFragment : Fragment() {
     private fun bindCategory(data: List<Category>) {
         categoryAdapter.submitData(data)
     }
+
     private fun setupCategory() {
         binding.rvCategory.apply {
             adapter = categoryAdapter
@@ -148,7 +149,7 @@ class HomeFragment : Fragment() {
         categoryAdapter.submitData(data)
     }
 
-    private fun bindMenuList(data : List<Menu>) {
+    private fun bindMenuList(data: List<Menu>) {
         menuAdapter.submitData(data)
     }
 
