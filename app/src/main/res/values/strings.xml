@@ -56,4 +56,6 @@
     <string name="text_your_name">Your Name</string>
     <string name="text_email">Email</string>
     <string name="text_save">Save</string>
+    <string name="text_change_profile_data_success">Change Profile data Success !</string>
+    <string name="text_change_profile_data_failed">Change Profile data Failed !</string>
 </resources>

@@ -10,8 +10,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import coil.load
-import coil.transform.CircleCropTransformation
 import com.example.foodapp.R
 import com.example.foodapp.data.datasource.auth.AuthDataSource
 import com.example.foodapp.data.datasource.auth.FirebaseAuthDataSource
@@ -20,7 +18,6 @@ import com.example.foodapp.data.repository.UserRepositoryImpl
 import com.example.foodapp.data.source.firebase.FirebaseService
 import com.example.foodapp.data.source.firebase.FirebaseServiceImpl
 import com.example.foodapp.databinding.FragmentProfileBinding
-import com.example.foodapp.presentation.login.LoginActivity
 import com.example.foodapp.presentation.main.MainActivity
 import com.example.foodapp.utils.GenericViewModelFactory
 import com.example.foodapp.utils.proceedWhen
@@ -53,25 +50,32 @@ class ProfileFragment : Fragment() {
         observeEditMode()
     }
 
-    private fun doEditProfile(){
-        if(checkNameValidation()){
+    private fun doEditProfile() {
+        if (checkNameValidation()) {
             val fullName = binding.layoutProfileBody.nameEditText.text.toString().trim()
             proceedEdit(fullName)
         }
     }
+
     private fun proceedEdit(fullName: String) {
         viewModel.updateProfileName(fullName = fullName).observe(viewLifecycleOwner) {
             it.proceedWhen(
                 doOnSuccess = {
                     binding.layoutProfileBody.pbLoading.isVisible = false
                     binding.layoutProfileBody.btnChangeProfile.isVisible = true
-                    Toast.makeText(requireContext(), "Change Profile data Success !", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.text_change_profile_data_success), Toast.LENGTH_SHORT
+                    ).show()
                     binding.layoutProfileBody.btnChangeProfile.isEnabled = false
                 },
                 doOnError = {
                     binding.layoutProfileBody.pbLoading.isVisible = false
                     binding.layoutProfileBody.btnChangeProfile.isVisible = true
-                    Toast.makeText(requireContext(), "Change Profile data Failed !", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.text_change_profile_data_failed), Toast.LENGTH_SHORT
+                    ).show()
 
                 },
                 doOnLoading = {
@@ -96,7 +100,6 @@ class ProfileFragment : Fragment() {
     }
 
 
-
     private fun showUserData() {
         viewModel.getCurrentUser()?.let {
             binding.layoutProfileBody.nameEditText.setText(it.fullName)
@@ -109,13 +112,15 @@ class ProfileFragment : Fragment() {
         val fullName = binding.layoutProfileBody.nameEditText.text.toString().trim()
         return if (fullName.isEmpty()) {
             binding.layoutProfileBody.nameInputLayout.isErrorEnabled = true
-            binding.layoutProfileBody.nameInputLayout.error = getString(R.string.text_error_name_cannot_empty)
+            binding.layoutProfileBody.nameInputLayout.error =
+                getString(R.string.text_error_name_cannot_empty)
             false
         } else {
             binding.layoutProfileBody.nameInputLayout.isErrorEnabled = false
             true
         }
     }
+
     private fun observeEditMode() {
         viewModel.isEditMode.observe(viewLifecycleOwner) {
             binding.layoutProfileBody.nameEditText.isEnabled = it
