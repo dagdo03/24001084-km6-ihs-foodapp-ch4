@@ -1,6 +1,6 @@
-package com.example.foodapp.data.source.local.preference
+package com.example.foodapp.data.repository
 
-interface UserPreference {
+interface PreferenceRepository {
     fun isUsingGridMode(): Boolean
     fun setUsingGridMode(isUsingGridMode: Boolean)
 }

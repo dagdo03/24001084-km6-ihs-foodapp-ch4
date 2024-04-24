@@ -9,29 +9,17 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import com.example.foodapp.R
-import com.example.foodapp.data.datasource.auth.AuthDataSource
-import com.example.foodapp.data.datasource.auth.FirebaseAuthDataSource
-import com.example.foodapp.data.repository.UserRepository
-import com.example.foodapp.data.repository.UserRepositoryImpl
-import com.example.foodapp.data.source.firebase.FirebaseService
-import com.example.foodapp.data.source.firebase.FirebaseServiceImpl
 import com.example.foodapp.databinding.FragmentProfileBinding
 import com.example.foodapp.presentation.main.MainActivity
-import com.example.foodapp.utils.GenericViewModelFactory
 import com.example.foodapp.utils.proceedWhen
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class ProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileBinding
-    private val viewModel: ProfileViewModel by viewModels {
-        val s: FirebaseService = FirebaseServiceImpl()
-        val ds: AuthDataSource = FirebaseAuthDataSource(s)
-        val r: UserRepository = UserRepositoryImpl(ds)
-        GenericViewModelFactory.create(ProfileViewModel(r))
-    }
+    private val profileViewModel: ProfileViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,7 +46,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun proceedEdit(fullName: String) {
-        viewModel.updateProfileName(fullName = fullName).observe(viewLifecycleOwner) {
+        profileViewModel.updateProfileName(fullName = fullName).observe(viewLifecycleOwner) {
             it.proceedWhen(
                 doOnSuccess = {
                     binding.layoutProfileBody.pbLoading.isVisible = false
@@ -88,9 +76,9 @@ class ProfileFragment : Fragment() {
 
 
     private fun requestChangePassword() {
-        viewModel.createChangePwdRequest()
+        profileViewModel.createChangePwdRequest()
         val dialog = AlertDialog.Builder(requireContext())
-            .setMessage("Change password request sended to your email : ${viewModel.getCurrentUser()?.email} Please check to your inbox or spam")
+            .setMessage("Change password request sended to your email : ${profileViewModel.getCurrentUser()?.email} Please check to your inbox or spam")
             .setPositiveButton(
                 "Okay"
             ) { dialog, id ->
@@ -101,7 +89,7 @@ class ProfileFragment : Fragment() {
 
 
     private fun showUserData() {
-        viewModel.getCurrentUser()?.let {
+        profileViewModel.getCurrentUser()?.let {
             binding.layoutProfileBody.nameEditText.setText(it.fullName)
 //            binding.layoutProfileBody.usernameEditText.setText(it.username)
             binding.layoutProfileBody.emailEditText.setText(it.email)
@@ -122,7 +110,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun observeEditMode() {
-        viewModel.isEditMode.observe(viewLifecycleOwner) {
+        profileViewModel.isEditMode.observe(viewLifecycleOwner) {
             binding.layoutProfileBody.nameEditText.isEnabled = it
             binding.layoutProfileBody.btnChangeProfile.isEnabled = it
         }
@@ -130,7 +118,7 @@ class ProfileFragment : Fragment() {
 
     private fun setClickListener() {
         binding.layoutProfileHeader.ivIcEditText.setOnClickListener {
-            viewModel.changeEditMode()
+            profileViewModel.changeEditMode()
         }
         binding.layoutProfileBody.btnChangeProfile.setOnClickListener {
             doEditProfile()
@@ -154,7 +142,7 @@ class ProfileFragment : Fragment() {
             .setPositiveButton(
                 "Yes"
             ) { dialog, id ->
-                viewModel.doLogout()
+                profileViewModel.doLogout()
                 navigateToMenu()
             }
             .setNegativeButton(

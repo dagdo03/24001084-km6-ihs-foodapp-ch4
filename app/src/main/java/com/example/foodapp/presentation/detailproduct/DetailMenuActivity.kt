@@ -19,26 +19,23 @@ import com.example.foodapp.databinding.ActivityDetailMenuBinding
 import com.example.foodapp.utils.GenericViewModelFactory
 import com.example.foodapp.utils.proceedWhen
 import com.example.foodapp.utils.toIndonesianFormat
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class DetailMenuActivity : AppCompatActivity() {
     private var location: String? = ""
     private val binding: ActivityDetailMenuBinding by lazy {
         ActivityDetailMenuBinding.inflate(layoutInflater)
     }
-    private val viewModel: DetailMenuViewModel by viewModels {
-        val db = AppDatabase.getInstance(this)
-        val ds: CartDataSource = CartDatabaseDataSource(db.cartDao())
-        val rp: CartRepository = CartRepositoryImpl(ds)
-        GenericViewModelFactory.create(
-            DetailMenuViewModel(intent?.extras, rp)
-        )
+    private val detailMenuViewModel: DetailMenuViewModel by viewModel {
+        parametersOf(intent.extras)
     }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        bindMenu(viewModel.menu)
+        bindMenu(detailMenuViewModel.menu)
         setClickListener()
         observeData()
     }
@@ -48,10 +45,10 @@ class DetailMenuActivity : AppCompatActivity() {
             onBackPressed()
         }
         binding.layoutAddToCart.ivDecrementButton.setOnClickListener {
-            viewModel.minus()
+            detailMenuViewModel.minus()
         }
         binding.layoutAddToCart.ivIncrementButton.setOnClickListener {
-            viewModel.add()
+            detailMenuViewModel.add()
         }
         binding.layoutLocation.let {
             it.tvLocationDesc.setOnClickListener {
@@ -77,17 +74,17 @@ class DetailMenuActivity : AppCompatActivity() {
     }
 
     private fun observeData() {
-        viewModel.priceLiveData.observe(this) {
+        detailMenuViewModel.priceLiveData.observe(this) {
             binding.layoutAddToCart.bAddToCartButton.isEnabled = it != 0
             binding.layoutAddToCart.tvTotalPrice.text = it.toIndonesianFormat()
         }
-        viewModel.menuCountLiveData.observe(this) {
+        detailMenuViewModel.menuCountLiveData.observe(this) {
             binding.layoutAddToCart.tvCounterText.text = it.toString()
         }
     }
 
     private fun addToCart() {
-        viewModel.addToCart().observe(this) {
+        detailMenuViewModel.addToCart().observe(this) {
             it.proceedWhen(
                 doOnSuccess = {
                     Toast.makeText(

@@ -7,8 +7,8 @@ import com.google.firebase.auth.userProfileChangeRequest
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
 
-class FirebaseServiceImpl : FirebaseService {
-    private val firebaseAuth = FirebaseAuth.getInstance()
+class FirebaseServiceImpl(private val firebaseAuth : FirebaseAuth) : FirebaseService {
+
     override suspend fun doLogin(email: String, password: String): Boolean {
         val loginResult = firebaseAuth.signInWithEmailAndPassword(email, password).await()
         return loginResult.user != null
