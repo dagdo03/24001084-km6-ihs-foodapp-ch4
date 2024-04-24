@@ -7,60 +7,38 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import com.example.foodapp.R
-import com.example.foodapp.data.datasource.auth.AuthDataSource
-import com.example.foodapp.data.datasource.auth.FirebaseAuthDataSource
-import com.example.foodapp.data.datasource.cart.CartDataSource
-import com.example.foodapp.data.datasource.cart.CartDatabaseDataSource
 import com.example.foodapp.data.model.Cart
-import com.example.foodapp.data.repository.CartRepository
-import com.example.foodapp.data.repository.CartRepositoryImpl
-import com.example.foodapp.data.repository.UserRepository
-import com.example.foodapp.data.repository.UserRepositoryImpl
-import com.example.foodapp.data.source.firebase.FirebaseService
-import com.example.foodapp.data.source.firebase.FirebaseServiceImpl
-import com.example.foodapp.data.source.local.database.AppDatabase
 import com.example.foodapp.databinding.FragmentCartBinding
 import com.example.foodapp.presentation.checkout.CheckoutActivity
 import com.example.foodapp.presentation.common.adapter.CartListAdapter
 import com.example.foodapp.presentation.common.adapter.CartListener
 import com.example.foodapp.presentation.login.LoginActivity
-import com.example.foodapp.presentation.main.MainViewModel
-import com.example.foodapp.utils.GenericViewModelFactory
 import com.example.foodapp.utils.hideKeyboard
 import com.example.foodapp.utils.proceedWhen
 import com.example.foodapp.utils.toIndonesianFormat
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CartFragment : Fragment() {
 
     private lateinit var binding: FragmentCartBinding
-    private val viewModel: CartViewModel by viewModels {
-        val s: FirebaseService = FirebaseServiceImpl()
-        val ads: AuthDataSource = FirebaseAuthDataSource(s)
-        val ur: UserRepository = UserRepositoryImpl(ads)
-        val db = AppDatabase.getInstance(requireContext())
-        val ds: CartDataSource = CartDatabaseDataSource(db.cartDao())
-        val rp: CartRepository = CartRepositoryImpl(ds)
-        GenericViewModelFactory.create(CartViewModel(rp, ur))
-    }
+    private val cartViewModel: CartViewModel by viewModel()
     private val adapter: CartListAdapter by lazy {
         CartListAdapter(object : CartListener {
             override fun onPlusTotalItemCartClicked(cart: Cart) {
-                viewModel.increaseCart(cart)
+                cartViewModel.increaseCart(cart)
             }
 
             override fun onMinusTotalItemCartClicked(cart: Cart) {
-                viewModel.decreaseCart(cart)
+                cartViewModel.decreaseCart(cart)
             }
 
             override fun onRemoveCartClicked(cart: Cart) {
-                viewModel.removeCart(cart)
+                cartViewModel.removeCart(cart)
             }
 
             override fun onUserDoneEditingNotes(cart: Cart) {
-                viewModel.setCartNotes(cart)
+                cartViewModel.setCartNotes(cart)
                 hideKeyboard()
             }
 
@@ -85,7 +63,7 @@ class CartFragment : Fragment() {
 
     private fun setClickListeners() {
         binding.btnCheckoutCart.setOnClickListener {
-            if(!viewModel.isLoggedIn()) navigateToLogin()
+            if(!cartViewModel.isLoggedIn()) navigateToLogin()
             else startActivity(Intent(requireContext(), CheckoutActivity::class.java))
         }
     }
@@ -98,7 +76,7 @@ class CartFragment : Fragment() {
     }
 
     private fun observeData() {
-        viewModel.getAllCarts().observe(viewLifecycleOwner) { result ->
+        cartViewModel.getAllCarts().observe(viewLifecycleOwner) { result ->
             result.proceedWhen(
                 doOnLoading = {
                     binding.layoutState.root.isVisible = true

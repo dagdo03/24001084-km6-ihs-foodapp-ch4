@@ -6,13 +6,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.example.foodapp.data.repository.CategoryRepository
 import com.example.foodapp.data.repository.MenuRepository
-import com.example.foodapp.data.source.local.preference.UserPreference
+import com.example.foodapp.data.repository.PreferenceRepository
 import kotlinx.coroutines.Dispatchers
 
 class HomeViewModel(
     private val categoryRepository: CategoryRepository,
     private val menuRepository: MenuRepository,
-    private val userPreference: UserPreference
+    private val userPreference: PreferenceRepository
 ) : ViewModel() {
     private val _isUsingGridMode = MutableLiveData(userPreference.isUsingGridMode())
     val isUsingGridMode: LiveData<Boolean>
@@ -30,6 +30,7 @@ class HomeViewModel(
 
     fun getMenu(categoryName: String? = null) =
         menuRepository.getMenus(categoryName).asLiveData(Dispatchers.IO)
+
     fun getCategory() = categoryRepository.getCategories().asLiveData(Dispatchers.IO)
 
 }

@@ -8,40 +8,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.example.foodapp.R
-import com.example.foodapp.data.datasource.cart.CartDataSource
-import com.example.foodapp.data.datasource.cart.CartDatabaseDataSource
-import com.example.foodapp.data.datasource.menu.MenuApiDataSource
-import com.example.foodapp.data.datasource.menu.MenuDataSource
-import com.example.foodapp.data.repository.CartRepository
-import com.example.foodapp.data.repository.CartRepositoryImpl
-import com.example.foodapp.data.repository.MenuRepository
-import com.example.foodapp.data.repository.MenuRepositoryImpl
-import com.example.foodapp.data.source.local.database.AppDatabase
-import com.example.foodapp.data.source.network.services.FoodAppApiService
 import com.example.foodapp.databinding.ActivityCheckoutBinding
 import com.example.foodapp.presentation.checkout.adapter.PriceListAdapter
 import com.example.foodapp.presentation.common.adapter.CartListAdapter
-import com.example.foodapp.utils.GenericViewModelFactory
 import com.example.foodapp.utils.proceedWhen
 import com.example.foodapp.utils.toIndonesianFormat
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CheckoutActivity : AppCompatActivity() {
     private val binding: ActivityCheckoutBinding by lazy {
         ActivityCheckoutBinding.inflate(layoutInflater)
     }
-    private val viewModel: CheckoutViewModel by viewModels {
-        val service = FoodAppApiService.invoke()
-        val db = AppDatabase.getInstance(this)
-        val menuDataSource: MenuDataSource = MenuApiDataSource(service)
-        val menuRepository: MenuRepository = MenuRepositoryImpl(menuDataSource)
-        val ds: CartDataSource = CartDatabaseDataSource(db.cartDao())
-        val rp: CartRepository = CartRepositoryImpl(ds)
-        GenericViewModelFactory.create(CheckoutViewModel(rp, menuRepository))
-    }
+    private val checkoutViewModel: CheckoutViewModel by viewModel()
     private val adapter: CartListAdapter by lazy {
         CartListAdapter()
     }
@@ -65,7 +46,7 @@ class CheckoutActivity : AppCompatActivity() {
             onBackPressed()
         }
         binding.btnCheckout.setOnClickListener {
-            viewModel.checkoutCart()
+            checkoutViewModel.checkoutCart()
             observeCheckoutResult()
         }
     }
@@ -77,7 +58,7 @@ class CheckoutActivity : AppCompatActivity() {
     }
 
     private fun observeData() {
-        viewModel.checkoutData.observe(this) { result ->
+        checkoutViewModel.checkoutData.observe(this) { result ->
             result.proceedWhen(
                 doOnSuccess = {
                 binding.layoutState.root.isVisible = false
@@ -122,7 +103,7 @@ class CheckoutActivity : AppCompatActivity() {
     }
 
     private fun observeCheckoutResult() {
-        viewModel.checkoutCart().observe(this) {
+        checkoutViewModel.checkoutCart().observe(this) {
             it.proceedWhen(
                 doOnSuccess = {
                     binding.layoutState.root.isVisible = false
@@ -153,7 +134,7 @@ class CheckoutActivity : AppCompatActivity() {
         val dialog = alertDialogBuilder.create()
         alertDialogBuilder.setView(dialogView)
         finishBtn.setOnClickListener {
-            viewModel.removeAllCart()
+            checkoutViewModel.removeAllCart()
             (context as? Activity)?.finish() // Make sure context is an Activity
             dialog.dismiss()
         }

@@ -6,59 +6,36 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.foodapp.R
-import com.example.foodapp.data.datasource.category.CategoryApiDataSource
-import com.example.foodapp.data.datasource.menu.MenuApiDataSource
 import com.example.foodapp.data.model.Category
 import com.example.foodapp.data.model.Menu
-import com.example.foodapp.data.repository.CategoryRepository
-import com.example.foodapp.data.repository.CategoryRepositoryImpl
-import com.example.foodapp.data.repository.MenuRepository
-import com.example.foodapp.data.repository.MenuRepositoryImpl
-import com.example.foodapp.data.source.local.preference.UserPreferenceImpl
-import com.example.foodapp.data.source.network.services.FoodAppApiService
 import com.example.foodapp.databinding.FragmentHomeBinding
 import com.example.foodapp.presentation.detailproduct.DetailMenuActivity
 import com.example.foodapp.presentation.home.adapter.CategoryListAdapter
 import com.example.foodapp.presentation.home.adapter.MenuListAdapter
-import com.example.foodapp.utils.GenericViewModelFactory
 import com.example.foodapp.utils.proceedWhen
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
-    private val viewModel: HomeViewModel by viewModels {
-        val service = FoodAppApiService.invoke()
-        val userPreference = UserPreferenceImpl(requireContext())
-        val menuDataSource = MenuApiDataSource(service)
-        val menuRepository: MenuRepository = MenuRepositoryImpl(menuDataSource)
-        val categoryDataSource = CategoryApiDataSource(service)
-        val categoryRepository: CategoryRepository = CategoryRepositoryImpl(categoryDataSource)
-        GenericViewModelFactory.create(
-            HomeViewModel(
-                categoryRepository,
-                menuRepository,
-                userPreference
-            )
-        )
-    }
+    private val homeViewModel: HomeViewModel by viewModel()
     private val categoryAdapter: CategoryListAdapter by lazy {
         CategoryListAdapter {
             getMenuData(it.name)
         }
     }
     private val menuAdapter: MenuListAdapter by lazy {
-        MenuListAdapter(viewModel.getListMode()) {
+        MenuListAdapter(homeViewModel.getListMode()) {
             navigateToDetail(it)
         }
     }
 
     private fun getMenuData(name: String? = null) {
-        viewModel.getMenu(name).observe(viewLifecycleOwner) {
+        homeViewModel.getMenu(name).observe(viewLifecycleOwner) {
             it.proceedWhen(
                 doOnSuccess = {
                     it.payload?.let { data ->
@@ -76,7 +53,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun getCategoryData() {
-        viewModel.getCategory().observe(viewLifecycleOwner) {
+        homeViewModel.getCategory().observe(viewLifecycleOwner) {
             it.proceedWhen(
                 doOnSuccess = {
                     it.payload?.let { data -> bindCategory(data) }
@@ -96,7 +73,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeGridMode() {
-        viewModel.isUsingGridMode.observe(viewLifecycleOwner) { isUsingGridMode ->
+        homeViewModel.isUsingGridMode.observe(viewLifecycleOwner) { isUsingGridMode ->
             changeBtnIcon(isUsingGridMode)
             changeLayout(isUsingGridMode)
         }
@@ -114,7 +91,7 @@ class HomeFragment : Fragment() {
 
     private fun setClickAction() {
         binding.ivIconList.setOnClickListener {
-            viewModel.changeListMode()
+            homeViewModel.changeListMode()
         }
     }
 

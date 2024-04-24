@@ -58,4 +58,6 @@
     <string name="text_save">Save</string>
     <string name="text_change_profile_data_success">Change Profile data Success !</string>
     <string name="text_change_profile_data_failed">Change Profile data Failed !</string>
+    <string name="text_foryou">ForYou</string>
+    <string name="text_yourcart">YourCart</string>
 </resources>

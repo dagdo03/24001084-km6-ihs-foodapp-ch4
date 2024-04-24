@@ -2,32 +2,20 @@ package com.example.foodapp.presentation.main
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.foodapp.R
-import com.example.foodapp.data.datasource.auth.AuthDataSource
-import com.example.foodapp.data.datasource.auth.FirebaseAuthDataSource
-import com.example.foodapp.data.repository.UserRepository
-import com.example.foodapp.data.repository.UserRepositoryImpl
-import com.example.foodapp.data.source.firebase.FirebaseService
-import com.example.foodapp.data.source.firebase.FirebaseServiceImpl
 import com.example.foodapp.databinding.ActivityMainBinding
 import com.example.foodapp.presentation.login.LoginActivity
-import com.example.foodapp.utils.GenericViewModelFactory
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
     private val binding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
-    private val viewModel: MainViewModel by viewModels {
-        val s: FirebaseService = FirebaseServiceImpl()
-        val ds: AuthDataSource = FirebaseAuthDataSource(s)
-        val r: UserRepository = UserRepositoryImpl(ds)
-        GenericViewModelFactory.create(MainViewModel(r))
-    }
+    private val mainViewModel: MainViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
             when (destination.id) {
                 R.id.menu_tab_profile -> {
-                    if (!viewModel.isLoggedIn()) {
+                    if (!mainViewModel.isLoggedIn()) {
                         navigateToLogin()
                         controller.popBackStack(R.id.menu_tab_home, false)
                     }

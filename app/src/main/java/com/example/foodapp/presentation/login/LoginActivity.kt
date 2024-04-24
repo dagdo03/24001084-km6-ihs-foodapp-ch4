@@ -4,35 +4,23 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.example.foodapp.R
-import com.example.foodapp.data.datasource.auth.AuthDataSource
-import com.example.foodapp.data.datasource.auth.FirebaseAuthDataSource
-import com.example.foodapp.data.repository.UserRepository
-import com.example.foodapp.data.repository.UserRepositoryImpl
-import com.example.foodapp.data.source.firebase.FirebaseService
-import com.example.foodapp.data.source.firebase.FirebaseServiceImpl
 import com.example.foodapp.databinding.ActivityLoginBinding
 import com.example.foodapp.presentation.main.MainActivity
 import com.example.foodapp.presentation.register.RegisterActivity
-import com.example.foodapp.utils.GenericViewModelFactory
 import com.example.foodapp.utils.highLightWord
 import com.example.foodapp.utils.proceedWhen
 import com.google.android.material.textfield.TextInputLayout
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginActivity : AppCompatActivity() {
 
     private val binding: ActivityLoginBinding by lazy {
         ActivityLoginBinding.inflate(layoutInflater)
     }
-    private val viewModel: LoginViewModel by viewModels {
-        val s: FirebaseService = FirebaseServiceImpl()
-        val ds: AuthDataSource = FirebaseAuthDataSource(s)
-        val r: UserRepository = UserRepositoryImpl(ds)
-        GenericViewModelFactory.create(LoginViewModel(r))
-    }
+    private val loginViewModel: LoginViewModel by viewModel()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,7 +67,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun proceedLogin(email: String, password: String) {
-        viewModel.doLogin(email, password).observe(this) {
+        loginViewModel.doLogin(email, password).observe(this) {
             it.proceedWhen(
                 doOnSuccess = {
                     binding.pbLoading.isVisible = false
