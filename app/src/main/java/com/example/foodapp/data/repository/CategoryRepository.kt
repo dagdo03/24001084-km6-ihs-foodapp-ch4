@@ -5,5 +5,5 @@ import com.example.foodapp.utils.ResultWrapper
 import kotlinx.coroutines.flow.Flow
 
 interface CategoryRepository {
-    fun getCategories() : Flow<ResultWrapper<List<Category>>>
+    fun getCategories(): Flow<ResultWrapper<List<Category>>>
 }

@@ -28,7 +28,6 @@ class CheckoutActivity : AppCompatActivity() {
     }
     private val priceItemAdapter: PriceListAdapter by lazy {
         PriceListAdapter {
-
         }
     }
 
@@ -38,7 +37,6 @@ class CheckoutActivity : AppCompatActivity() {
         setupList()
         observeData()
         setClickListeners()
-
     }
 
     private fun setClickListeners() {
@@ -51,7 +49,6 @@ class CheckoutActivity : AppCompatActivity() {
         }
     }
 
-
     private fun setupList() {
         binding.layoutContent.rvCart.adapter = adapter
         binding.layoutContent.rvShoppingSummary.adapter = priceItemAdapter
@@ -61,44 +58,48 @@ class CheckoutActivity : AppCompatActivity() {
         checkoutViewModel.checkoutData.observe(this) { result ->
             result.proceedWhen(
                 doOnSuccess = {
-                binding.layoutState.root.isVisible = false
-                binding.layoutState.pbLoading.isVisible = false
-                binding.layoutState.tvError.isVisible = false
-                binding.layoutContent.root.isVisible = true
-                binding.layoutContent.rvCart.isVisible = true
-                binding.cvSectionOrder.isVisible = true
-                result.payload?.let { (carts, priceItems, totalPrice) ->
-                    adapter.submitData(carts)
-                    binding.tvTotalPrice.text = totalPrice.toIndonesianFormat()
-                    priceItemAdapter.submitData(priceItems)
-                }
-            }, doOnLoading = {
-                binding.layoutState.root.isVisible = true
-                binding.layoutState.pbLoading.isVisible = true
-                binding.layoutState.tvError.isVisible = false
-                binding.layoutContent.root.isVisible = false
-                binding.layoutContent.rvCart.isVisible = false
-                binding.cvSectionOrder.isVisible = false
-            }, doOnError = {
-                binding.layoutState.root.isVisible = true
-                binding.layoutState.pbLoading.isVisible = false
-                binding.layoutState.tvError.isVisible = true
-                binding.layoutState.tvError.text = result.exception?.message.orEmpty()
-                binding.layoutContent.root.isVisible = false
-                binding.layoutContent.rvCart.isVisible = false
-                binding.cvSectionOrder.isVisible = false
-            }, doOnEmpty = { data ->
-                binding.layoutState.root.isVisible = true
-                binding.layoutState.pbLoading.isVisible = false
-                binding.layoutState.tvError.isVisible = true
-                binding.layoutState.tvError.text = getString(R.string.text_cart_is_empty)
-                data.payload?.let { (_, _, totalPrice) ->
-                    binding.tvTotalPrice.text = totalPrice.toIndonesianFormat()
-                }
-                binding.layoutContent.root.isVisible = false
-                binding.layoutContent.rvCart.isVisible = false
-                binding.cvSectionOrder.isVisible = false
-            })
+                    binding.layoutState.root.isVisible = false
+                    binding.layoutState.pbLoading.isVisible = false
+                    binding.layoutState.tvError.isVisible = false
+                    binding.layoutContent.root.isVisible = true
+                    binding.layoutContent.rvCart.isVisible = true
+                    binding.cvSectionOrder.isVisible = true
+                    result.payload?.let { (carts, priceItems, totalPrice) ->
+                        adapter.submitData(carts)
+                        binding.tvTotalPrice.text = totalPrice.toIndonesianFormat()
+                        priceItemAdapter.submitData(priceItems)
+                    }
+                },
+                doOnLoading = {
+                    binding.layoutState.root.isVisible = true
+                    binding.layoutState.pbLoading.isVisible = true
+                    binding.layoutState.tvError.isVisible = false
+                    binding.layoutContent.root.isVisible = false
+                    binding.layoutContent.rvCart.isVisible = false
+                    binding.cvSectionOrder.isVisible = false
+                },
+                doOnError = {
+                    binding.layoutState.root.isVisible = true
+                    binding.layoutState.pbLoading.isVisible = false
+                    binding.layoutState.tvError.isVisible = true
+                    binding.layoutState.tvError.text = result.exception?.message.orEmpty()
+                    binding.layoutContent.root.isVisible = false
+                    binding.layoutContent.rvCart.isVisible = false
+                    binding.cvSectionOrder.isVisible = false
+                },
+                doOnEmpty = { data ->
+                    binding.layoutState.root.isVisible = true
+                    binding.layoutState.pbLoading.isVisible = false
+                    binding.layoutState.tvError.isVisible = true
+                    binding.layoutState.tvError.text = getString(R.string.text_cart_is_empty)
+                    data.payload?.let { (_, _, totalPrice) ->
+                        binding.tvTotalPrice.text = totalPrice.toIndonesianFormat()
+                    }
+                    binding.layoutContent.root.isVisible = false
+                    binding.layoutContent.rvCart.isVisible = false
+                    binding.cvSectionOrder.isVisible = false
+                },
+            )
         }
     }
 
@@ -116,13 +117,13 @@ class CheckoutActivity : AppCompatActivity() {
                     Toast.makeText(
                         this,
                         getString(R.string.text_checkout_error),
-                        Toast.LENGTH_SHORT
+                        Toast.LENGTH_SHORT,
                     ).show()
                 },
                 doOnLoading = {
                     binding.layoutState.root.isVisible = true
                     binding.layoutState.pbLoading.isVisible = true
-                }
+                },
             )
         }
     }
@@ -140,5 +141,4 @@ class CheckoutActivity : AppCompatActivity() {
         }
         alertDialogBuilder.show()
     }
-
 }

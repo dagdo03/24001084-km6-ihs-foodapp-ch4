@@ -1,8 +1,7 @@
 package com.example.foodapp.data.source.network.model.menu
 
-
-import com.google.gson.annotations.SerializedName
 import androidx.annotation.Keep
+import com.google.gson.annotations.SerializedName
 
 @Keep
 data class MenuItemResponse(
@@ -17,5 +16,5 @@ data class MenuItemResponse(
     @SerializedName("image_url")
     val imageUrl: String?,
     @SerializedName("nama")
-    val nama: String?
+    val nama: String?,
 )

@@ -5,12 +5,11 @@ import coil.load
 import com.example.foodapp.core.ViewHolderBinder
 import com.example.foodapp.data.model.Menu
 import com.example.foodapp.databinding.LayoutItemMenuGridBinding
-import com.example.foodapp.presentation.home.adapter.OnItemClickedListener
 import com.example.foodapp.utils.toIndonesianFormat
 
 class MenuGridItemViewHolder(
     private val binding: LayoutItemMenuGridBinding,
-    private val itemClick: (Menu) -> Unit
+    private val itemClick: (Menu) -> Unit,
 ) : RecyclerView.ViewHolder(binding.root),
     ViewHolderBinder<Menu> {
     override fun bind(item: Menu) {

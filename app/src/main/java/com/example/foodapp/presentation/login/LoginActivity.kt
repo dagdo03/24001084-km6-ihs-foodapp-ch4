@@ -16,12 +16,10 @@ import com.google.android.material.textfield.TextInputLayout
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginActivity : AppCompatActivity() {
-
     private val binding: ActivityLoginBinding by lazy {
         ActivityLoginBinding.inflate(layoutInflater)
     }
     private val loginViewModel: LoginViewModel by viewModel()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,9 +36,11 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun navigateToMain() {
-        startActivity(Intent(this, MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-        })
+        startActivity(
+            Intent(this, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            },
+        )
     }
 
     private fun setClickListeners() {
@@ -53,9 +53,11 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun navigateToRegister() {
-        startActivity(Intent(this, RegisterActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
-        })
+        startActivity(
+            Intent(this, RegisterActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            },
+        )
     }
 
     private fun doLogin() {
@@ -66,7 +68,10 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun proceedLogin(email: String, password: String) {
+    private fun proceedLogin(
+        email: String,
+        password: String,
+    ) {
         loginViewModel.doLogin(email, password).observe(this) {
             it.proceedWhen(
                 doOnSuccess = {
@@ -80,13 +85,13 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(
                         this,
                         "Login Failed : ${it.exception?.message.orEmpty()}",
-                        Toast.LENGTH_SHORT
+                        Toast.LENGTH_SHORT,
                     ).show()
                 },
                 doOnLoading = {
                     binding.pbLoading.isVisible = true
                     binding.btnLogin.isVisible = false
-                }
+                },
             )
         }
     }
@@ -96,7 +101,7 @@ class LoginActivity : AppCompatActivity() {
         val password = binding.layoutForm.etPassword.text.toString().trim()
 
         return checkEmailValidation(email) &&
-                checkPasswordValidation(password, binding.layoutForm.tilPassword)
+            checkPasswordValidation(password, binding.layoutForm.tilPassword)
     }
 
     private fun checkEmailValidation(email: String): Boolean {
@@ -116,7 +121,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun checkPasswordValidation(
         confirmPassword: String,
-        textInputLayout: TextInputLayout
+        textInputLayout: TextInputLayout,
     ): Boolean {
         return if (confirmPassword.isEmpty()) {
             textInputLayout.isErrorEnabled = true

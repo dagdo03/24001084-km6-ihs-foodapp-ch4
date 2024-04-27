@@ -7,5 +7,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface MenuRepository {
     fun getMenus(categorySlug: String? = null): Flow<ResultWrapper<List<Menu>>>
+
     fun createOrder(products: List<Cart>): Flow<ResultWrapper<Boolean>>
 }

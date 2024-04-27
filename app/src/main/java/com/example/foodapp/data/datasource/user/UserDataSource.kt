@@ -4,6 +4,8 @@ import com.example.foodapp.data.model.Profie
 
 interface UserDataSource {
     fun isUsingDarkMode(): Boolean
+
     fun setUsingDarkMode(isUsingDarkMode: Boolean)
-    fun getData() : List<Profie>
+
+    fun getData(): List<Profie>
 }

@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 class UserRepositoryImpl(private val dataSource: AuthDataSource) : UserRepository {
     override fun doLogin(
         email: String,
-        password: String
+        password: String,
     ): Flow<ResultWrapper<Boolean>> {
         return proceedFlow { dataSource.doLogin(email, password) }
     }
@@ -17,7 +17,7 @@ class UserRepositoryImpl(private val dataSource: AuthDataSource) : UserRepositor
     override fun doRegister(
         email: String,
         fullName: String,
-        password: String
+        password: String,
     ): Flow<ResultWrapper<Boolean>> {
         return proceedFlow { dataSource.doRegister(email, fullName, password) }
     }
