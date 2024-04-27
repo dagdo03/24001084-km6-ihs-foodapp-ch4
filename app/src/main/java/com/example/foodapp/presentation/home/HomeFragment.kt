@@ -18,9 +18,7 @@ import com.example.foodapp.presentation.home.adapter.MenuListAdapter
 import com.example.foodapp.utils.proceedWhen
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-
 class HomeFragment : Fragment() {
-
     private lateinit var binding: FragmentHomeBinding
     private val homeViewModel: HomeViewModel by viewModel()
     private val categoryAdapter: CategoryListAdapter by lazy {
@@ -41,7 +39,7 @@ class HomeFragment : Fragment() {
                     it.payload?.let { data ->
                         bindMenuList(data)
                     }
-                }
+                },
             )
         }
     }
@@ -57,7 +55,7 @@ class HomeFragment : Fragment() {
             it.proceedWhen(
                 doOnSuccess = {
                     it.payload?.let { data -> bindCategory(data) }
-                }
+                },
             )
         }
     }
@@ -88,28 +86,30 @@ class HomeFragment : Fragment() {
         }
     }
 
-
     private fun setClickAction() {
         binding.ivIconList.setOnClickListener {
             homeViewModel.changeListMode()
         }
     }
 
-
     private fun changeBtnIcon(usingGridMode: Boolean) {
         binding.ivIconList.setImageResource(if (usingGridMode) R.drawable.ic_list_view else R.drawable.ic_grid_view)
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         setupCategory()
         setupMenu()

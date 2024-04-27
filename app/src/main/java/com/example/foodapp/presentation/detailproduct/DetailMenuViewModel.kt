@@ -17,13 +17,15 @@ class DetailMenuViewModel(
 ) : ViewModel() {
     val menu = extras?.getParcelable<Menu>(DetailMenuActivity.EXTRA_MENU)
 
-    val menuCountLiveData = MutableLiveData(0).apply {
-        postValue(0)
-    }
+    val menuCountLiveData =
+        MutableLiveData(0).apply {
+            postValue(0)
+        }
 
-    val priceLiveData = MutableLiveData<Int>().apply {
-        postValue(0)
-    }
+    val priceLiveData =
+        MutableLiveData<Int>().apply {
+            postValue(0)
+        }
 
     fun add() {
         val count = (menuCountLiveData.value ?: 0) + 1

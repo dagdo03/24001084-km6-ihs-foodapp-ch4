@@ -23,34 +23,37 @@ class CartRepositoryImpl(private val cartDataSource: CartDataSource) : CartRepos
                 // mapping into cartlist and sum into total price
                 proceed {
                     val result = it.toCartList()
-                    val totalPrice = result.sumOf {
-                        it.productPrice * it.itemQuantity
-                    }
+                    val totalPrice =
+                        result.sumOf {
+                            it.productPrice * it.itemQuantity
+                        }
                     Pair(result, totalPrice)
                 }
             }.map {
                 // map to check when list is empty
-                if(it.payload?.first?.isEmpty() == false) return@map it
+                if (it.payload?.first?.isEmpty() == false) return@map it
                 ResultWrapper.Empty(it.payload)
             }.onStart {
                 emit(ResultWrapper.Loading())
                 delay(2000)
             }
     }
-    override fun getCheckoutData(): Flow<ResultWrapper<Triple<List<Cart>,List<PriceItem>, Int>>>{
+
+    override fun getCheckoutData(): Flow<ResultWrapper<Triple<List<Cart>, List<PriceItem>, Int>>> {
         return cartDataSource.getAllCarts()
             .map {
-                //mapping into cart list and sum the total price
+                // mapping into cart list and sum the total price
                 proceed {
                     val result = it.toCartList()
-                    val priceItemList = result.map {
-                        PriceItem(it.productName, it.productPrice * it.itemQuantity)
-                    }
+                    val priceItemList =
+                        result.map {
+                            PriceItem(it.productName, it.productPrice * it.itemQuantity)
+                        }
                     val totalPrice = priceItemList.sumOf { it.total }
-                    Triple(result,priceItemList, totalPrice)
+                    Triple(result, priceItemList, totalPrice)
                 }
             }.map {
-                //map to check when list is empty
+                // map to check when list is empty
                 if (it.payload?.first?.isEmpty() == false) return@map it
                 ResultWrapper.Empty(it.payload)
             }.onStart {
@@ -66,35 +69,37 @@ class CartRepositoryImpl(private val cartDataSource: CartDataSource) : CartRepos
     override fun createCart(
         menu: Menu,
         quantity: Int,
-        notes: String?
+        notes: String?,
     ): Flow<ResultWrapper<Boolean>> {
         return menu.id?.let { menuId ->
             // when id is not null
             proceedFlow {
-                val affectedRow = cartDataSource.insertCart(
-                    CartEntity(
-                        productId = menuId,
-                        itemQuantity = quantity,
-                        productName = menu.name,
-                        productPrice = menu.price,
-                        productImgUrl = menu.imgURL,
-                        itemNotes = notes,
-                        )
-                )
+                val affectedRow =
+                    cartDataSource.insertCart(
+                        CartEntity(
+                            productId = menuId,
+                            itemQuantity = quantity,
+                            productName = menu.name,
+                            productPrice = menu.price,
+                            productImgUrl = menu.imgURL,
+                            itemNotes = notes,
+                        ),
+                    )
                 delay(1000)
                 affectedRow > 0
             }
-        }?: flow {
+        } ?: flow {
             // when id is not exist
             emit(ResultWrapper.Error(IllegalStateException("Product Id not found")))
         }
     }
 
     override fun decreaseCart(item: Cart): Flow<ResultWrapper<Boolean>> {
-        val modifiedCart = item.copy().apply {
-            itemQuantity -= 1
-        }
-        return if (modifiedCart.itemQuantity <= 0){
+        val modifiedCart =
+            item.copy().apply {
+                itemQuantity -= 1
+            }
+        return if (modifiedCart.itemQuantity <= 0) {
             proceedFlow { cartDataSource.deleteCart(item.toCartEntity()) > 0 }
         } else {
             proceedFlow { cartDataSource.updateCart(modifiedCart.toCartEntity()) > 0 }
@@ -102,9 +107,10 @@ class CartRepositoryImpl(private val cartDataSource: CartDataSource) : CartRepos
     }
 
     override fun increaseCart(item: Cart): Flow<ResultWrapper<Boolean>> {
-        val modifiedCart = item.copy().apply {
-            itemQuantity += 1
-        }
+        val modifiedCart =
+            item.copy().apply {
+                itemQuantity += 1
+            }
         return proceedFlow { cartDataSource.updateCart(modifiedCart.toCartEntity()) > 0 }
     }
 

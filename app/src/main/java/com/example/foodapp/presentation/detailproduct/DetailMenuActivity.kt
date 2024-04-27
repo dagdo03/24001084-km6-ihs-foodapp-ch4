@@ -5,18 +5,11 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import coil.load
 import com.example.foodapp.R
-import com.example.foodapp.data.datasource.cart.CartDataSource
-import com.example.foodapp.data.datasource.cart.CartDatabaseDataSource
 import com.example.foodapp.data.model.Menu
-import com.example.foodapp.data.repository.CartRepository
-import com.example.foodapp.data.repository.CartRepositoryImpl
-import com.example.foodapp.data.source.local.database.AppDatabase
 import com.example.foodapp.databinding.ActivityDetailMenuBinding
-import com.example.foodapp.utils.GenericViewModelFactory
 import com.example.foodapp.utils.proceedWhen
 import com.example.foodapp.utils.toIndonesianFormat
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -30,7 +23,6 @@ class DetailMenuActivity : AppCompatActivity() {
     private val detailMenuViewModel: DetailMenuViewModel by viewModel {
         parametersOf(intent.extras)
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,16 +82,17 @@ class DetailMenuActivity : AppCompatActivity() {
                     Toast.makeText(
                         this,
                         getString(R.string.text_successfully_add_product_to_cart),
-                        Toast.LENGTH_SHORT
+                        Toast.LENGTH_SHORT,
                     ).show()
                     finish()
                 },
                 doOnError = {
                     Toast.makeText(
                         this,
-                        getString(R.string.text_failed_add_product_to_cart), Toast.LENGTH_SHORT
+                        getString(R.string.text_failed_add_product_to_cart),
+                        Toast.LENGTH_SHORT,
                     ).show()
-                }
+                },
             )
         }
     }
@@ -112,7 +105,11 @@ class DetailMenuActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_MENU = "EXTRA_MENU"
-        fun startActivity(context: Context, menu: Menu) {
+
+        fun startActivity(
+            context: Context,
+            menu: Menu,
+        ) {
             val intent = Intent(context, DetailMenuActivity::class.java)
             intent.putExtra(EXTRA_MENU, menu)
             context.startActivity(intent)

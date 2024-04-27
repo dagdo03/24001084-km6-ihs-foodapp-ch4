@@ -10,11 +10,9 @@ import com.example.foodapp.data.source.local.database.entity.CartEntity
 @Database(
     entities = [CartEntity::class],
     version = 2,
-    exportSchema = true
+    exportSchema = true,
 )
-
 abstract class AppDatabase : RoomDatabase() {
-
     abstract fun cartDao(): CartDao
 
     companion object {
@@ -23,11 +21,11 @@ abstract class AppDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: AppDatabase? = null
 
-        fun createInstance(context: Context): AppDatabase{
+        fun createInstance(context: Context): AppDatabase {
             return Room.databaseBuilder(
                 context.applicationContext,
                 AppDatabase::class.java,
-                DB_NAME
+                DB_NAME,
             ).fallbackToDestructiveMigration().build()
         }
 //        fun getInstance(context: Context): AppDatabase {

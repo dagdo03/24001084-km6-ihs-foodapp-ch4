@@ -19,17 +19,18 @@ class MenuRepositoryImpl(private val dataSource: MenuDataSource) : MenuRepositor
 
     override fun createOrder(products: List<Cart>): Flow<ResultWrapper<Boolean>> {
         return proceedFlow {
-            dataSource.createOrder(CheckoutRequestPayload(
-                orders = products.map {
-                    CheckoutItemPayload(
-                        notes = it.itemNotes,
-                        productId = it.productId.orEmpty(),
-                        quantity = it.itemQuantity
-                    )
-                }
-            )).status ?: false
+            dataSource.createOrder(
+                CheckoutRequestPayload(
+                    orders =
+                        products.map {
+                            CheckoutItemPayload(
+                                notes = it.itemNotes,
+                                productId = it.productId.orEmpty(),
+                                quantity = it.itemQuantity,
+                            )
+                        },
+                ),
+            ).status ?: false
         }
-
     }
-
 }

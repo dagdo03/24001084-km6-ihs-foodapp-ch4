@@ -8,13 +8,24 @@ import kotlinx.coroutines.flow.Flow
 
 interface CartRepository {
     fun getUserCartData(): Flow<ResultWrapper<Pair<List<Cart>, Int>>>
-    fun getCheckoutData(): Flow<ResultWrapper<Triple<List<Cart>,List<PriceItem>, Int>>>
-    fun createCart(menu: Menu, quantity: Int, notes: String? = null) : Flow<ResultWrapper<Boolean>>
-    fun decreaseCart(item : Cart) : Flow<ResultWrapper<Boolean>>
-    fun increaseCart(item : Cart) : Flow<ResultWrapper<Boolean>>
-    fun setCartNotes(item : Cart) : Flow<ResultWrapper<Boolean>>
-    fun deleteCart(item : Cart) : Flow<ResultWrapper<Boolean>>
-    suspend fun checkout(items: List<Cart>): Flow<ResultWrapper<Boolean>>
-    suspend fun deleteAll()
 
+    fun getCheckoutData(): Flow<ResultWrapper<Triple<List<Cart>, List<PriceItem>, Int>>>
+
+    fun createCart(
+        menu: Menu,
+        quantity: Int,
+        notes: String? = null,
+    ): Flow<ResultWrapper<Boolean>>
+
+    fun decreaseCart(item: Cart): Flow<ResultWrapper<Boolean>>
+
+    fun increaseCart(item: Cart): Flow<ResultWrapper<Boolean>>
+
+    fun setCartNotes(item: Cart): Flow<ResultWrapper<Boolean>>
+
+    fun deleteCart(item: Cart): Flow<ResultWrapper<Boolean>>
+
+    suspend fun checkout(items: List<Cart>): Flow<ResultWrapper<Boolean>>
+
+    suspend fun deleteAll()
 }

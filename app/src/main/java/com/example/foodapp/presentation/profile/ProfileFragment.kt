@@ -15,23 +15,24 @@ import com.example.foodapp.presentation.main.MainActivity
 import com.example.foodapp.utils.proceedWhen
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-
 class ProfileFragment : Fragment() {
-
     private lateinit var binding: FragmentProfileBinding
     private val profileViewModel: ProfileViewModel by viewModel()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View {
         // Inflate the layout for this fragment
         binding = FragmentProfileBinding.inflate(layoutInflater, container, false)
         return binding.root
-
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
         super.onViewCreated(view, savedInstanceState)
         showUserData()
         setClickListener()
@@ -53,7 +54,8 @@ class ProfileFragment : Fragment() {
                     binding.layoutProfileBody.btnChangeProfile.isVisible = true
                     Toast.makeText(
                         requireContext(),
-                        getString(R.string.text_change_profile_data_success), Toast.LENGTH_SHORT
+                        getString(R.string.text_change_profile_data_success),
+                        Toast.LENGTH_SHORT,
                     ).show()
                     binding.layoutProfileBody.btnChangeProfile.isEnabled = false
                 },
@@ -62,31 +64,31 @@ class ProfileFragment : Fragment() {
                     binding.layoutProfileBody.btnChangeProfile.isVisible = true
                     Toast.makeText(
                         requireContext(),
-                        getString(R.string.text_change_profile_data_failed), Toast.LENGTH_SHORT
+                        getString(R.string.text_change_profile_data_failed),
+                        Toast.LENGTH_SHORT,
                     ).show()
-
                 },
                 doOnLoading = {
                     binding.layoutProfileBody.pbLoading.isVisible = true
                     binding.layoutProfileBody.btnChangeProfile.isVisible = false
-                }
+                },
             )
         }
     }
 
-
     private fun requestChangePassword() {
         profileViewModel.createChangePwdRequest()
-        val dialog = AlertDialog.Builder(requireContext())
-            .setMessage("Change password request sended to your email : ${profileViewModel.getCurrentUser()?.email} Please check to your inbox or spam")
-            .setPositiveButton(
-                "Okay"
-            ) { dialog, id ->
-
-            }.create()
+        val dialog =
+            AlertDialog.Builder(requireContext())
+                .setMessage(
+                    "Change password request sended to your email : ${profileViewModel.getCurrentUser()?.email} Please check to your inbox or spam",
+                )
+                .setPositiveButton(
+                    "Okay",
+                ) { dialog, id ->
+                }.create()
         dialog.show()
     }
-
 
     private fun showUserData() {
         profileViewModel.getCurrentUser()?.let {
@@ -132,24 +134,27 @@ class ProfileFragment : Fragment() {
     }
 
     private fun navigateToMenu() {
-        startActivity(Intent(requireContext(), MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        })
+        startActivity(
+            Intent(requireContext(), MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            },
+        )
     }
 
     private fun doLogout() {
-        val dialog = AlertDialog.Builder(requireContext()).setMessage("Do you want to logout ?")
-            .setPositiveButton(
-                "Yes"
-            ) { dialog, id ->
-                profileViewModel.doLogout()
-                navigateToMenu()
-            }
-            .setNegativeButton(
-                "No"
-            ) { dialog, id ->
-                //no-op , do nothing
-            }.create()
+        val dialog =
+            AlertDialog.Builder(requireContext()).setMessage("Do you want to logout ?")
+                .setPositiveButton(
+                    "Yes",
+                ) { dialog, id ->
+                    profileViewModel.doLogout()
+                    navigateToMenu()
+                }
+                .setNegativeButton(
+                    "No",
+                ) { dialog, id ->
+                    // no-op , do nothing
+                }.create()
         dialog.show()
     }
 }

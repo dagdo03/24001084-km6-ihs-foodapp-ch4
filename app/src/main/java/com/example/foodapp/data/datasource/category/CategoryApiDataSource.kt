@@ -7,5 +7,4 @@ class CategoryApiDataSource(private val service: FoodAppApiService) : CategoryDa
     override suspend fun getCategoryData(): CategoriesResponse {
         return service.getCategories()
     }
-
 }
