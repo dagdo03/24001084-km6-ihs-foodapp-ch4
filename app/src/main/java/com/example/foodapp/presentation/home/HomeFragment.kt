@@ -49,9 +49,9 @@ class HomeFragment : Fragment() {
                 },
                 doOnLoading = {
                     binding.layoutState.root.isVisible = true
-                    binding.layoutOnEmptyDataState.root.isVisible = false
+//                    binding.layoutOnEmptyDataState.root.isVisible = false
                     binding.layoutState.pbLoading.isVisible = true
-                    binding.layoutOnEmptyDataState.ivOnEmptyData.isVisible = false
+//                    binding.layoutOnEmptyDataState.ivOnEmptyData.isVisible = false
                     binding.nsLayout.isVisible = false
                 },
                 doOnError = {
