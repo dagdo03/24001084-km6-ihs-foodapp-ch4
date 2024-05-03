@@ -71,7 +71,7 @@ class CartRepositoryImpl(private val cartDataSource: CartDataSource) : CartRepos
         quantity: Int,
         notes: String?,
     ): Flow<ResultWrapper<Boolean>> {
-        return menu.id?.let { menuId ->
+        return menu.id.let { menuId ->
             // when id is not null
             proceedFlow {
                 val affectedRow =

@@ -6,14 +6,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
+import com.example.foodapp.R
 import com.example.foodapp.data.model.Menu
 import com.example.foodapp.data.repository.CartRepository
+import com.example.foodapp.utils.AssetWrapper
 import com.example.foodapp.utils.ResultWrapper
 import kotlinx.coroutines.Dispatchers
 
 class DetailMenuViewModel(
     private val extras: Bundle?,
     private val cartRepository: CartRepository,
+    private val assetWrapper: AssetWrapper,
 ) : ViewModel() {
     val menu = extras?.getParcelable<Menu>(DetailMenuActivity.EXTRA_MENU)
 
@@ -45,6 +48,6 @@ class DetailMenuViewModel(
         return menu?.let {
             val quantity = menuCountLiveData.value ?: 0
             cartRepository.createCart(it, quantity).asLiveData(Dispatchers.IO)
-        } ?: liveData { emit(ResultWrapper.Error(IllegalStateException("Product not found"))) }
+        } ?: liveData { emit(ResultWrapper.Error(IllegalStateException(assetWrapper.getString(R.string.text_product_not_found)))) }
     }
 }

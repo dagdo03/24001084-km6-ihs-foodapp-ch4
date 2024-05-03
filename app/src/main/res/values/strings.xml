@@ -53,6 +53,7 @@
     <string name="text_change_profile">Change Profile</string>
     <string name="text_change_password">Change Password</string>
     <string name="text_logout">Logout</string>
+    <string name="text_not_login">You have not login yet</string>
     <string name="text_your_name">Your Name</string>
     <string name="text_email">Email</string>
     <string name="text_save">Save</string>
@@ -60,4 +61,8 @@
     <string name="text_change_profile_data_failed">Change Profile data Failed !</string>
     <string name="text_foryou">ForYou</string>
     <string name="text_yourcart">YourCart</string>
+    <string name="hi_username">Hi %1$s</string>
+    <string name="text_menu_is_empty">Menu is Empty</string>
+    <string name="text_product_not_found">Product not found</string>
+    <string name="text_error">Error!</string>
 </resources>

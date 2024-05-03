@@ -1,10 +1,12 @@
 package com.example.foodapp.presentation.home
 
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -36,9 +38,37 @@ class HomeFragment : Fragment() {
         homeViewModel.getMenu(name).observe(viewLifecycleOwner) {
             it.proceedWhen(
                 doOnSuccess = {
+                    binding.layoutState.root.isVisible = false
+                    binding.layoutOnEmptyDataState.root.isVisible = false
+                    binding.layoutState.pbLoading.isVisible = false
+                    binding.layoutOnEmptyDataState.ivOnEmptyData.isVisible = false
+                    binding.nsLayout.isVisible = true
                     it.payload?.let { data ->
                         bindMenuList(data)
                     }
+                },
+                doOnLoading = {
+                    binding.layoutState.root.isVisible = true
+                    binding.layoutOnEmptyDataState.root.isVisible = false
+                    binding.layoutState.pbLoading.isVisible = true
+                    binding.layoutOnEmptyDataState.ivOnEmptyData.isVisible = false
+                    binding.nsLayout.isVisible = false
+                },
+                doOnError = {
+                    binding.layoutState.root.isVisible = true
+                    binding.layoutOnEmptyDataState.root.isVisible = true
+                    binding.layoutState.pbLoading.isVisible = false
+                    binding.layoutOnEmptyDataState.ivOnEmptyData.isVisible = true
+                    binding.layoutOnEmptyDataState.tvOnEmptyData.text =
+                        getString(R.string.text_error)
+                    binding.nsLayout.isVisible = false
+                },
+                doOnEmpty = {
+                    binding.layoutState.root.isVisible = true
+                    binding.layoutOnEmptyDataState.root.isVisible = true
+                    binding.layoutState.pbLoading.isVisible = false
+                    binding.layoutOnEmptyDataState.ivOnEmptyData.isVisible = true
+                    binding.nsLayout.isVisible = false
                 },
             )
         }
@@ -54,7 +84,35 @@ class HomeFragment : Fragment() {
         homeViewModel.getCategory().observe(viewLifecycleOwner) {
             it.proceedWhen(
                 doOnSuccess = {
+                    binding.layoutState.root.isVisible = false
+                    binding.layoutOnEmptyDataState.root.isVisible = false
+                    binding.layoutState.pbLoading.isVisible = false
+                    binding.layoutOnEmptyDataState.ivOnEmptyData.isVisible = false
+                    binding.nsLayout.isVisible = true
                     it.payload?.let { data -> bindCategory(data) }
+                },
+                doOnLoading = {
+                    binding.layoutState.root.isVisible = true
+                    binding.layoutOnEmptyDataState.root.isVisible = false
+                    binding.layoutState.pbLoading.isVisible = true
+                    binding.layoutOnEmptyDataState.ivOnEmptyData.isVisible = false
+                    binding.nsLayout.isVisible = false
+                },
+                doOnError = {
+                    binding.layoutState.root.isVisible = true
+                    binding.layoutOnEmptyDataState.root.isVisible = true
+                    binding.layoutState.pbLoading.isVisible = false
+                    binding.layoutOnEmptyDataState.ivOnEmptyData.isVisible = true
+                    binding.layoutOnEmptyDataState.tvOnEmptyData.text =
+                        getString(R.string.text_error)
+                    binding.nsLayout.isVisible = false
+                },
+                doOnEmpty = {
+                    binding.layoutState.root.isVisible = true
+                    binding.layoutOnEmptyDataState.root.isVisible = true
+                    binding.layoutState.pbLoading.isVisible = false
+                    binding.layoutOnEmptyDataState.ivOnEmptyData.isVisible = true
+                    binding.nsLayout.isVisible = false
                 },
             )
         }
@@ -117,6 +175,20 @@ class HomeFragment : Fragment() {
         getCategoryData()
         getMenuData(null)
         setClickAction()
+        setDisplayName()
+    }
+
+    private fun setDisplayName() {
+        if (!homeViewModel.isLoggedIn()) {
+            binding.layoutHeader.tvName.apply {
+                text = getString(R.string.text_not_login)
+                setTypeface(null, Typeface.ITALIC)
+            }
+        } else {
+            val currentUser = homeViewModel.getCurrentUser()
+            binding.layoutHeader.tvName.text =
+                getString(R.string.hi_username, currentUser?.fullName)
+        }
     }
 
     private fun bindCategoryList(data: List<Category>) {

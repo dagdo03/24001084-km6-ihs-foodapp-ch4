@@ -36,6 +36,7 @@ import com.example.foodapp.presentation.login.LoginViewModel
 import com.example.foodapp.presentation.main.MainViewModel
 import com.example.foodapp.presentation.profile.ProfileViewModel
 import com.example.foodapp.presentation.register.RegisterViewModel
+import com.example.foodapp.utils.AssetWrapper
 import com.example.foodapp.utils.SharedPreferenceUtils
 import com.google.firebase.auth.FirebaseAuth
 import org.koin.android.ext.koin.androidContext
@@ -96,12 +97,17 @@ object AppModules {
                 DetailMenuViewModel(
                     extras = params.get(),
                     cartRepository = get(),
+                    assetWrapper = get(),
                 )
             }
             viewModelOf(::LoginViewModel)
             viewModelOf(::MainViewModel)
             viewModelOf(::ProfileViewModel)
             viewModelOf(::RegisterViewModel)
+        }
+    private val utilsModule =
+        module {
+            single { AssetWrapper(androidContext()) }
         }
 
     val modules =
@@ -112,5 +118,6 @@ object AppModules {
             repository,
             viewModelModule,
             firebaseModule,
+            utilsModule,
         )
 }

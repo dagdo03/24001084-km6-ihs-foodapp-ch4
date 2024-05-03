@@ -64,14 +64,6 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
-        <Button
-            android:id="@+id/btn_change_profile"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/text_save"
-            android:backgroundTint="@color/md_theme_light_tertiary"
-            />
-
         <com.google.android.material.progressindicator.CircularProgressIndicator
             android:id="@+id/pb_loading"
             android:layout_width="match_parent"
@@ -81,16 +73,23 @@
             android:visibility="gone" />
     </FrameLayout>
     <Button
+        android:id="@+id/btn_change_profile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/text_save"
+        android:backgroundTint="@color/md_theme_light_tertiary"
+        />
+    <Button
         android:id="@+id/btn_logout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/md_theme_dark_errorContainer"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="@string/text_logout"
         />
     <Button
         android:id="@+id/btn_reset_password"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/md_theme_light_secondary"
         android:layout_marginTop="8dp"
