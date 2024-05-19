@@ -6,6 +6,7 @@ plugins {
     id("kotlin-parcelize")
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
+    id("kotlin-android")
 }
 
 tasks.getByPath("preBuild").dependsOn("ktlintFormat")
@@ -53,6 +54,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = "1.8"
     }
@@ -78,6 +80,10 @@ android {
         }
     }
 }
+//
+// tasks.withType<Test> {
+//    useJUnitPlatform() // Make all tests use JUnit 5
+// }
 
 dependencies {
 
@@ -107,4 +113,11 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    testImplementation(libs.mockk.agent)
+    androidTestImplementation(libs.mockk.android)
+    testImplementation(libs.coroutine.test)
+    testImplementation(libs.turbine)
+    testImplementation(libs.core.testing)
+    testImplementation(kotlin("test"))
 }
